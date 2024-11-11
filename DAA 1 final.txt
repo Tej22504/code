@@ -1,0 +1,74 @@
+#include<iostream>
+using namespace std;
+
+int rfib(int x) {
+   if((x==1)||(x==0)) {
+      return(x);
+   } else {
+      return(rfib(x-1) + rfib(x-2));
+   }
+}
+
+void fib2(int n) {
+    int i = 0;
+    cout << "\nFibonacci Series using Recursive Method" << endl;
+    while (i < n)  // Change condition to i < n
+    {
+      cout << rfib(i) << "\t";
+      i++;
+    }
+}
+
+void fib1(int n) {
+    int a1 = 0, a2 = 1, a3, i;
+
+    cout << "\nFibonacci Series Without Recursion\n";
+    if (n >= 1) cout << a1 << "\t";  // Ensure n >= 1 for first term
+    if (n >= 2) cout << a2 << "\t";  // Ensure n >= 2 for second term
+
+    for(i = 2; i < n; i++)  // Loop from 2 to n-1 to print remaining terms
+    {
+        a3 = a2 + a1;
+        cout << a3 << "\t";
+        a1 = a2;
+        a2 = a3;
+    }
+}
+
+int main() {
+    int n, c;
+
+    cout << "Fibonacci Series\n";
+    do {
+        cout << "\n1. Fibonacci without Recursion\n";
+        cout << "2. Fibonacci with Recursion\n";
+        cout << "3. Exit\n";
+        cout << "\nEnter your choice: ";
+        cin >> c;
+
+        switch(c) {
+            case 1:
+                cout << "\nEnter the Number: ";
+                cin >> n;
+                fib1(n);
+                cout << endl;
+                break;
+
+            case 2:
+                cout << "\nEnter the Number: ";
+                cin >> n;
+                fib2(n);
+                cout << endl;
+                break;
+
+            case 3:
+                cout << "\nThank You";
+                break;
+
+            default:
+                cout << "\nInvalid Choice\n";
+        }
+    } while(c != 3);
+
+    return 0;
+}

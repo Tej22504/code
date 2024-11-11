@@ -1,0 +1,175 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
+# Step 1: Import necessary libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+
+
+# In[2]:
+
+
+# Read the dataset
+df = pd.read_csv('diabetes1.csv')
+
+
+# In[3]:
+
+
+df.head()
+
+
+# In[4]:
+
+
+df.tail()
+
+
+# In[5]:
+
+
+df.isnull()
+
+
+# In[6]:
+
+
+df.isnull().sum()
+
+
+# In[7]:
+
+
+df.notnull()
+
+
+# In[8]:
+
+
+df.notnull().sum()
+
+
+# In[9]:
+
+
+df.shape
+
+
+# In[10]:
+
+
+df.describe()
+
+
+# In[11]:
+
+
+df.info()
+
+
+# In[12]:
+
+
+# Assuming the dataset is clean, we separate features and labels
+X = df.drop('Outcome', axis=1)  # Features
+y = df['Outcome']                # Labels
+
+
+# In[13]:
+
+
+# Step 5: Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+
+# In[14]:
+
+
+# Step 6: Train the KNN model
+knn = KNeighborsClassifier(n_neighbors=5)  # You can adjust the number of neighbors
+knn.fit(X_train, y_train)
+
+
+# In[15]:
+
+
+# Step 7: Make predictions
+y_pred = knn.predict(X_test)
+
+
+# In[16]:
+
+
+# Step 8: Evaluate the model
+conf_matrix = confusion_matrix(y_test, y_pred)
+accuracy = accuracy_score(y_test, y_pred)
+error_rate = 1 - accuracy
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+
+
+# In[17]:
+
+
+# Step 9: Print results
+print(f"Accuracy: {accuracy:.2f}")
+print(f"Error Rate: {error_rate:.2f}")
+print(f"Precision: {precision:.2f}")
+print(f"Recall: {recall:.2f}")
+
+
+# In[18]:
+
+
+# Step 10: Visualize the confusion matrix
+plt.figure(figsize=(8, 6))
+sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', cbar=False,
+            xticklabels=['No Diabetes', 'Diabetes'],
+            yticklabels=['No Diabetes', 'Diabetes'])
+plt.title('Confusion Matrix')
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.show()
+
+
+# In[19]:
+
+
+# Step 4: Visualize the distribution of "Glucose" levels
+plt.figure(figsize=(14, 6))
+
+# Box plot
+plt.subplot(1, 2, 1)
+sns.boxplot(x='Outcome', y='Glucose', data=df)
+plt.title('Box Plot of Glucose Levels by Diabetes Outcome')
+plt.xlabel('Diabetes Outcome (0 = No, 1 = Yes)')
+plt.ylabel('Glucose Level')
+
+
+# In[20]:
+
+
+# Histogram
+plt.subplot(1, 2, 2)
+sns.histplot(df, x='Glucose', hue='Outcome', multiple='stack', bins=20, kde=True)
+plt.title('Histogram of Glucose Levels by Diabetes Outcome')
+plt.xlabel('Glucose Level')
+plt.ylabel('Frequency')
+
+plt.tight_layout()
+plt.show()
+
+
+# In[ ]:
+
+
+
+
